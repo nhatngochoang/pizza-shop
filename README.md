@@ -12,7 +12,10 @@ Features in Project:
 - Add to Cart, pay by Cash or Paypal reactjs, add to order lists
 - Search for Pizza Name
 <br />
+
 Admin:
-- Login, auth by token
-- Add, delete products
-- Config orders status
+<ul>
+<li>Login, auth by token</li>
+  <li>Add, delete products</li>
+  <li>Config orders status</li>
+</ul>
