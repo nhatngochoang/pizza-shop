@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import searchReducer from '../pages/reducers/search.js'
+
 const search = createSlice({
    name: "search",
    initialState: {
