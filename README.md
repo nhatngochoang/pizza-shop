@@ -11,6 +11,7 @@ Features in Project:
 - View Pizza List
 - Add to Cart, pay by Cash or Paypal reactjs, add to order lists
 - Search for Pizza Name
+<br />
 Admin:
 - Login, auth by token
 - Add, delete products
