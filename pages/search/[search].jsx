@@ -8,8 +8,11 @@ import styles from "../../styles/PizzaList.module.css";
 import { increaseSearch } from "../../redux/searchSlice.js";
 
 const Search = ({ pizzaList }) => {
+   // @ts-ignore
    const searchObj = useSelector((state) => state.search)
+   // @ts-ignore
    const search = useSelector((state) => state.search.searchFilter)
+   // @ts-ignore
    let quantity = useSelector((state) => state.search.quantity)
    const dispatch = useDispatch();
    // console.log(searchObj);
@@ -68,7 +71,7 @@ const Search = ({ pizzaList }) => {
    );
 };
 
-export const getServerSideProps = async ({ params }) => {
+export const getServerSideProps = async () => {
    // const myCookie = ctx.req?.cookies || "";
    // let admin = false;
 

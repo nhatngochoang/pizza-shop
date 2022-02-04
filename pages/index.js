@@ -1,12 +1,10 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import React, { useState } from 'react'
 import Featured from '../components/Featured.jsx'
 import PizzaList from '../components/PizzaList.jsx'
 import Add from '../components/Add.jsx'
 import styles from '../styles/Home.module.css'
 import axios from "axios"
-import mongoose from 'mongoose'
 import 'bootstrap/dist/css/bootstrap.css'
 import AddButton from '../components/AddButton.jsx'
 
