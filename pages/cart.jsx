@@ -56,7 +56,7 @@ function Cart() {
    const handleClose = useCallback(() => {
       console.log('Function-render');
       setCash(false);
-   }, [cash])
+   }, [])
 
    const ButtonWrapper = ({ currency, showSpinner }) => {
       // usePayPalScriptReducer can be use only inside children of PayPalScriptProviders
@@ -71,7 +71,7 @@ function Cart() {
                currency: currency,
             },
          });
-      }, [currency, showSpinner]);
+      }, [dispatch, options, currency]);
 
 
 

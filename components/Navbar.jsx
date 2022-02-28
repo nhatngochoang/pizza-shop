@@ -12,10 +12,9 @@ const Navbar = () => {
    const [searchFilter, setSearchFilter] = useState('')
    // @ts-ignore
    const quantity = useSelector((state) => state.cart.quantity)
-   const search = useSelector((state) => state.search.searchFilter)
+   // const search = useSelector((state) => state.search.searchFilter)
    const dispatch = useDispatch();
    // const navigate = useNavigate();
-   console.log(search);
 
    const handleSearchClick = (e) => {
       // e.preventDefault();
@@ -45,8 +44,8 @@ const Navbar = () => {
                <Link href="/" passHref>
                   <li className={styles.listItem}>Trang chủ</li>
                </Link>
-               <li className={styles.listItem}><a style={{ textDecoration: 'none', color: 'white' }} href="#product-list">Sản phẩm</a></li>
-               <li className={styles.listItem}><a style={{ textDecoration: 'none', color: 'white' }} href="#introduction">Giới thiệu</a></li>
+               <li className={styles.listItem}><a style={{ textDecoration: 'none', color: 'white' }} >Sản phẩm</a></li>
+               <li className={styles.listItem}><a style={{ textDecoration: 'none', color: 'white' }} >Giới thiệu</a></li>
                <Image src="/img/logo.webp" alt="" width="110px" height="69px" />
                {/* <li className={styles.listItem}>Events</li>
                <li className={styles.listItem}>Blog</li>

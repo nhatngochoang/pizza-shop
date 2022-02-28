@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import styles from "../../styles/Product.module.css"
 import Image from "next/image";
 import { useState } from "react";
@@ -48,6 +48,7 @@ const Product = ({ pizza }) => {
    const handleClick = () => {
       dispatch(addProduct({ ...pizza, extras, price, quantity }))
    }
+
    return (
       <div className={styles.container}>
          <div className={styles.left}>
@@ -89,34 +90,6 @@ const Product = ({ pizza }) => {
                      <label htmlFor="double">{option.text}</label>
                   </div>
                ))}
-
-               {/* <div className={styles.option}>
-                  <input
-                     className={styles.checkbox}
-                     type="checkbox"
-                     id="cheese"
-                     name="cheese"
-                  />
-                  <label htmlFor="cheese">Thêm Cheese</label>
-               </div>
-               <div className={styles.option}>
-                  <input
-                     className={styles.checkbox}
-                     type="checkbox"
-                     id="spicy"
-                     name="spicy"
-                  />
-                  <label htmlFor="spicy">Sốt Cay</label>
-               </div>
-               <div className={styles.option}>
-                  <input
-                     className={styles.checkbox}
-                     type="checkbox"
-                     id="garlic"
-                     name="garlic"
-                  />
-                  <label htmlFor="garlic">Sốt Tỏi</label>
-               </div> */}
             </div>
             <div className={styles.add}>
                <input

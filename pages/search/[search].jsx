@@ -22,11 +22,13 @@ const Search = ({ pizzaList }) => {
    const newPizzaList = []
    pizzaList.map((pizza) => {
       const title = pizza.title.toUpperCase();
-      const searchStr = search.toUpperCase()
-      const re = new RegExp(`${searchStr}`);
-      if (title.search(re) !== -1) {
-         // setCount(prev => prev + 1)
-         newPizzaList.push(pizza)
+      if (search) {
+         const searchStr = search.toUpperCase()
+         const re = new RegExp(`${searchStr}`);
+         if (title.search(re) !== -1) {
+            // setCount(prev => prev + 1)
+            newPizzaList.push(pizza)
+         }
       }
    })
 
@@ -44,10 +46,6 @@ const Search = ({ pizzaList }) => {
    //    setCount(prev => prev + 1)
    //    // dispatch(increaseSearch({ quantity: quantity + 1 }))
    // }, [])
-
-   useEffect(() => { /*Step 2.3, count thay đổi => gọi callback*/
-
-   }, [])
 
    // const handleCount = useCallback(() => { /*Step 2.1*/
    //    setCount(prev => prev + 1)

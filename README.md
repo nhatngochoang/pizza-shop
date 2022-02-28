@@ -3,7 +3,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 ## Deploy on Vercel
 
 Not success
-
+Error: 500 Internal Server Error
+Fix on Local: Reload
+<img src="./images/error.png"/>
 # pizza-shop
 
 Features in Project:
