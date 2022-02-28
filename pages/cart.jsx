@@ -21,25 +21,13 @@ function Cart() {
    const [open, setOpen] = useState(false);
    const [cash, setCash] = useState(false);
 
-   const payPalButtonRef = useRef()
    const usdToVND = 22.69
    // const amount = (Number(cart.total) / 22.69).toString()
    var amount = Number(cart.total / usdToVND).toFixed(2)
-
    const currency = "USD";
    const style = { layout: "vertical" };
    const dispatch = useDispatch();
    const router = useRouter();
-
-   console.log('Local-render');
-
-   let toggled = useRef(false);
-
-   const handleToggleBody = () => {
-      toggled.current = !toggled.current;
-      console.log(toggled.current);
-      setOpen(toggled.current)
-   }
 
    const createOrder = async (data) => {
       try {
@@ -53,11 +41,7 @@ function Cart() {
       }
    };
 
-   const handleClose = useCallback(() => {
-      console.log('Function-render');
-      setCash(false);
-   }, [])
-
+   // Custom component to wrap the PayPalButtons and handle currency changes
    const ButtonWrapper = ({ currency, showSpinner }) => {
       // usePayPalScriptReducer can be use only inside children of PayPalScriptProviders
       // This is the main reason to wrap the PayPalButtons in a new component
@@ -71,52 +55,47 @@ function Cart() {
                currency: currency,
             },
          });
-      }, [dispatch, options, currency]);
+      }, [currency, showSpinner]);
 
-
-
-      return (<>
-         {(showSpinner && isPending) && <div className="spinner" />}
-         <PayPalButtons
-            // @ts-ignore
-            style={style}
-            disabled={false}
-            forceReRender={[amount, currency, style]}
-            fundingSource={undefined}
-            createOrder={(data, actions) => {
-               return actions.order
-                  .create({
-                     purchase_units: [
-                        {
-                           amount: {
-                              currency_code: currency,
-                              value: amount,
+      return (
+         <>
+            {showSpinner && isPending && <div className="spinner" />}
+            <PayPalButtons
+               disabled={false}
+               forceReRender={[amount, currency, style]}
+               fundingSource={undefined}
+               createOrder={(data, actions) => {
+                  return actions.order
+                     .create({
+                        purchase_units: [
+                           {
+                              amount: {
+                                 currency_code: currency,
+                                 value: amount,
+                              },
                            },
-                        },
-                     ],
-                  })
-                  .then((orderId) => {
-                     // Your code here after create the order
-                     return orderId;
+                        ],
+                     })
+                     .then((orderId) => {
+                        // Your code here after create the order
+                        return orderId;
+                     });
+               }}
+               onApprove={function (data, actions) {
+                  return actions.order.capture().then(function (details) {
+                     const shipping = details.purchase_units[0].shipping;
+                     createOrder({
+                        customer: shipping.name.full_name,
+                        address: shipping.address.address_line_1,
+                        total: cart.total,
+                        method: 1,
+                     });
                   });
-            }}
-            onApprove={function (data, actions) {
-               return actions.order.capture().then(function (details) {
-                  // Your code here after capture the order
-                  const shipping = details.purchase_units[0].shipping;
-                  createOrder({
-                     customer: shipping.name.full_name,
-                     address: shipping.address.address_line_1,
-                     total: cart.total,
-                     method: 1,
-                  });
-               });
-            }}
-         />
-      </>
+               }}
+            />
+         </>
       );
-   }
-
+   };
 
    return (
       <div className={styles.container}>
@@ -133,42 +112,41 @@ function Cart() {
                   </tr>
                </tbody>
                <tbody>
-
-                  {cart.products.map((product) => {
-                     return (
-                        <tr className={styles.tr} key={product.id}>
-                           <td>
-                              <div className={styles.imgContainer}>
-                                 <Image
-                                    src={product.img}
-                                    layout="fill"
-                                    objectFit="cover"
-                                    alt=""
-                                    className={styles.imgItem}
-                                 />
-                              </div>
-                           </td>
-                           <td>
-                              <span className={styles.name}>{product.title}</span>
-                           </td>
-                           <td>
-                              <span className={styles.extras}>
-                                 {product.extras.map((extra) => (
-                                    <div key={extra._id}>{extra.text}</div>
-                                 ))}
-                              </span>
-                           </td>
-                           <td>
-                              <span className={styles.price}>{product.price}.000 đ</span>
-                           </td>
-                           <td>
-                              <span className={styles.quantity}>{product.quantity}</span>
-                           </td>
-                           <td>
-                              <span className={styles.total}>{product.quantity * product.price}.000 đ</span>
-                           </td>
-                        </tr>)
-                  })}
+                  {cart.products.map((product) => (
+                     <tr className={styles.tr} key={product._id}>
+                        <td>
+                           <div className={styles.imgContainer}>
+                              <Image
+                                 src={product.img}
+                                 layout="fill"
+                                 objectFit="cover"
+                                 alt=""
+                              />
+                           </div>
+                        </td>
+                        <td>
+                           <span className={styles.name}>{product.title}</span>
+                        </td>
+                        <td>
+                           <span className={styles.extras}>
+                              {product.extras.map((extra) => (
+                                 <span key={extra._id}>{extra.text}, </span>
+                              ))}
+                           </span>
+                        </td>
+                        <td>
+                           <span className={styles.price}>{product.price}.000 đ</span>
+                        </td>
+                        <td>
+                           <span className={styles.quantity}>{product.quantity}</span>
+                        </td>
+                        <td>
+                           <span className={styles.total}>
+                              {product.quantity * product.price}.000 đ
+                           </span>
+                        </td>
+                     </tr>
+                  ))}
                </tbody>
             </table>
          </div>
@@ -184,14 +162,14 @@ function Cart() {
                <div className={styles.totalText}>
                   <b className={styles.totalTextTitle}>Tổng:</b>{cart.total}.000 đ
                </div>
-
-               {toggled.current ? (
+               {open ? (
                   <div className={styles.paymentMethods}>
                      <button
+                        className={styles.payButton}
                         onClick={() => setCash(true)}
-                        className={styles.payButton} >THANH TOÁN KHI NHẬN HÀNG
+                     >
+                        THANH TOÁN KHI NHẬN HÀNG
                      </button>
-
                      <PayPalScriptProvider
                         options={{
                            "client-id": "AVNesOwqXbzxJfeHgYkcjfu9aQ9CIguJvHGBwCAS7T2F4akkx6WyEB107d6ZB0KGG0RamQYbmxqFZRIQ",
@@ -208,22 +186,15 @@ function Cart() {
                      </PayPalScriptProvider>
                   </div>
                ) : (
-                  <button
-                     // onClick={() => setOpen(!open)}
-                     onClick={handleToggleBody}
-                     className={styles.button}>THANH TOÁN NGAY!</button>
+                  <button onClick={() => setOpen(true)} className={styles.button}>
+                     THANH TOÁN NGAY!
+                  </button>
                )}
-
             </div>
          </div>
-         {cash && <OrderDetail
-            total={cart.total}
-            createOrder={createOrder}
-            onClose={() => setCash(false)}
-         // onClose={handleClose}
-         />}
+         {cash && <OrderDetail total={cart.total} createOrder={createOrder} />}
       </div>
    );
-}
+};
 
-export default Cart
+export default Cart;

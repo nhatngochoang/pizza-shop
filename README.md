@@ -13,6 +13,14 @@ Features in Project:
 - View Pizza List
 - Add to Cart, pay by Cash or Paypal reactjs, add to order lists
 - Search for Pizza Name
+  
+<img src="./images/demo1.png"/>
+<img src="./images/demo2.png"/>
+<img src="./images/demo3.png"/>
+<img src="./images/demo4.png"/>
+<img src="./images/demo5.png"/>
+
+
 <br />
 
 Admin:
@@ -21,3 +29,5 @@ Admin:
   <li>Add, delete products</li>
   <li>Config orders status</li>
 </ul>
+<img src="./images/demo6.png"/>
+
